@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 97%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 10% 94%;
+    --secondary-foreground: 220 15% 25%;
+
+    --muted: 220 10% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 90%;
+    --input: 220 10% 90%;
+    --ring: 24 95% 53%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 15% 15%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 10% 94%;
+    --sidebar-accent-foreground: 220 15% 25%;
+    --sidebar-border: 220 10% 90%;
+    --sidebar-ring: 24 95% 53%;
+
+    --glow-primary: 24 95% 53%;
+    --glow-warm: 15 80% 50%;
+    --surface-glass: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* 3D Carousel Styles */
+.scene, .a3d { display: grid; }
+
+.scene {
+  overflow: hidden;
+  perspective: 35em;
+  mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);
+  -webkit-mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);
+}
+
+.a3d {
+  place-self: center;
+  transform-style: preserve-3d;
+  animation: ry 32s linear infinite;
+}
+
+@keyframes ry { to { rotate: y 1turn; } }
+
+.card-3d {
+  --w: 14em;
+  --ba: calc(360deg / var(--n));
+  grid-area: 1 / 1;
+  width: var(--w);
+  aspect-ratio: 7 / 10;
+  object-fit: cover;
+  border-radius: 1.25em;
+  backface-visibility: hidden;
+  transform:
+    rotatey(calc(var(--i) * var(--ba)))
+    translatez(calc(-1 * (.5 * var(--w) + .5em) / tan(calc(.5 * var(--ba)))));
+  box-shadow: 0 8px 32px hsl(0 0% 0% / 0.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a3d { animation-duration: 128s; }
+}
+
+/* Glow effects - light theme */
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.15), transparent 50%, hsl(var(--glow-warm) / 0.1));
+  z-index: -1;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--glow-warm)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-warm {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--glow-warm) / 0.05));
+}
+
+
+.bg-glass {
+  background: hsl(var(--surface-glass) / 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Material 3D Card */
+.card-material {
+  background: hsl(var(--card));
+  border-radius: 1rem;
+  box-shadow: 
+    0 1px 3px hsl(220 10% 50% / 0.08),
+    0 4px 12px hsl(220 10% 50% / 0.06),
+    0 12px 32px hsl(220 10% 50% / 0.04);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.card-material:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 
+    0 4px 8px hsl(220 10% 50% / 0.1),
+    0 12px 28px hsl(220 10% 50% / 0.1),
+    0 24px 48px hsl(220 10% 50% / 0.08);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
