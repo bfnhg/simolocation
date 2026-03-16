@@ -7,6 +7,8 @@ import CarCard from "@/components/CarCard";
 import ReservationModal from "@/components/ReservationModal";
 import CarDetailsModal from "@/components/CarDetailsModal";
 import Navbar from "@/components/Navbar";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import ContactSection from "@/components/ContactSection";
 import { cars, Car, categories, CarCategory } from "@/data/cars";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +31,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroCarousel />
+
+      <WhyChooseUs />
 
       {/* Cars Section */}
       <section id="cars" className="py-20 px-4">
@@ -102,6 +106,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <ContactSection />
 
       {/* Footer */}
       <footer className="border-t border-border py-12 px-4">
