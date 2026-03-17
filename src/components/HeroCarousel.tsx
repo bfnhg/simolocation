@@ -100,7 +100,7 @@ const HeroCarousel: React.FC = () => {
         .main-title {
           font-family: 'Playfair Display', serif;
           font-weight: 700;
-          font-size: clamp(3rem, 9vw, 7rem);
+          font-size: clamp(2rem, 8vw, 6rem);
           line-height: 0.9;
           letter-spacing: -0.02em;
           color: #2c1005;
@@ -156,54 +156,64 @@ const HeroCarousel: React.FC = () => {
           background: rgba(176,72,24,0.25);
         }
 
-        /* ══ CAROUSEL 3D ══ */
-        .scene, .a3d { display: grid; }
-
+        /* ══ CAROUSEL 3D CORRIGÉ ══ */
         .scene {
-          overflow: hidden;
-          perspective: 38em;
-          mask: linear-gradient(90deg, #0000 0%, red 8% 92%, #0000 100%);
-          -webkit-mask: linear-gradient(90deg, #0000 0%, red 8% 92%, #0000 100%);
-          width: 100vw;
-          margin-left: calc(-50vw + 50%);
-          min-height: 320px;
+          width: 100%;
+          height: 400px;
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          perspective: 1200px;
+          overflow: visible;
+          margin: 20px 0;
           filter: drop-shadow(0 24px 40px rgba(120,50,10,0.25));
         }
 
         .a3d {
-          place-self: center;
+          width: 220px;
+          height: 280px;
+          position: relative;
           transform-style: preserve-3d;
-          animation: ry 28s linear infinite;
+          animation: rotateCarousel 30s linear infinite;
         }
-        /* hover pause retiré — le carousel tourne en continu */
 
-        @keyframes ry { to { rotate: y 1turn; } }
+        /* Pause au survol optionnel - décommentez si vous voulez */
+        /* .a3d:hover {
+          animation-play-state: paused;
+        } */
 
-        @media (prefers-reduced-motion: reduce) {
-          .a3d { animation-duration: 112s; }
+        @keyframes rotateCarousel {
+          from { transform: rotateY(0deg); }
+          to { transform: rotateY(360deg); }
         }
 
         .card3d {
-          --w: 16em;
-          --ba: calc(1turn / ${N});
-          grid-area: 1 / 1;
-          width: var(--w);
-          aspect-ratio: 3 / 4;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
           object-fit: cover;
           border-radius: 1.2em;
           backface-visibility: hidden;
-          transform:
-            rotateY(calc(var(--i) * var(--ba)))
-            translateZ(calc(-1 * (.5 * var(--w) + .5em) / tan(.5 * var(--ba))));
           outline: 2.5px solid rgba(255,200,100,0.35);
           outline-offset: -1px;
           box-shadow: 0 6px 24px rgba(120,50,0,0.30), inset 0 0 0 1px rgba(255,220,120,0.12);
           filter: sepia(0.12) saturate(1.1) contrast(1.05);
           transition: filter 0.4s, outline-color 0.4s;
+          cursor: pointer;
         }
+
         .card3d:hover {
           filter: sepia(0) saturate(1.2) contrast(1.08) brightness(1.05);
           outline-color: rgba(255,180,60,0.7);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .a3d {
+            animation: rotateCarousel 60s linear infinite;
+          }
         }
 
         .hero-cta {
@@ -212,6 +222,7 @@ const HeroCarousel: React.FC = () => {
           gap: 16px;
           flex-wrap: wrap;
           justify-content: center;
+          margin-top: 20px;
         }
 
         .btn-primary {
@@ -313,18 +324,15 @@ const HeroCarousel: React.FC = () => {
               <span className="badge-line" />
             </div>
             <h1 className="main-title">
-              Marrakech
-              <span className="line2">Auto Location</span>
+              Premium car marrakech
+              {/* <span className="line2">Livraison à l'aéroport Kilométrage illimité</span> */}
             </h1>
-            <p className="subtitle">
-              Dès  25€/jour  Pick-up.<br />
-              Livraison à l'aéroport  Kilométrage illimité.
-            </p>
+           
           </div>
 
           <div className="stats">
             <div className="stat">
-              <div className="stat-num">10</div>
+              <div className="stat-num">{N}</div>
               <div className="stat-label">Modèles</div>
             </div>
             <div className="stat-sep" />
@@ -339,24 +347,29 @@ const HeroCarousel: React.FC = () => {
             </div>
           </div>
 
-          {/* ══ Carousel 3D ══ */}
+          {/* ══ Carousel 3D CORRIGÉ ══ */}
           <div className="scene">
-            <div className="a3d" style={{ '--n': N } as React.CSSProperties}>
-              {DATA.map((car, i) => (
-                <img
-                  key={i}
-                  className="card3d"
-                  src={car.src}           
-                  style={{ '--i': i } as React.CSSProperties}
-                  alt={car.label}
-                  title={`${car.label} — ${car.price}`}
-                  onError={(e) => {
-                    // Fallback si l'image n'existe pas encore
-                    (e.target as HTMLImageElement).src =
-                      `https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=320&auto=format&fit=crop`;
-                  }}
-                />
-              ))}
+            <div className="a3d">
+              {DATA.map((car, i) => {
+                const angle = (360 / N) * i;
+                return (
+                  <img
+                    key={i}
+                    className="card3d"
+                    src={car.src}
+                    style={{ 
+                      transform: `rotateY(${angle}deg) translateZ(320px)` 
+                    } as React.CSSProperties}
+                    alt={car.label}
+                    title={`${car.label} — ${car.price}`}
+                    onError={(e) => {
+                      // Fallback si l'image n'existe pas encore
+                      (e.target as HTMLImageElement).src =
+                        `https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=320&auto=format&fit=crop`;
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
 
