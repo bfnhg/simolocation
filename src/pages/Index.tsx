@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { TestimonialGlobe } from "@/components/Testimonials";
 
 const Index = () => {
   const [reserveCar, setReserveCar] = useState<Car | null>(null);
@@ -106,8 +107,10 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <TestimonialGlobe />
 
       <ContactSection />
+
 
       {/* Footer */}
       <footer className="border-t border-border py-12 px-4">
