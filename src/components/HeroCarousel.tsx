@@ -34,10 +34,10 @@ const HeroCarousel: React.FC = () => {
         .hero {
           position: relative;
           min-height: 100vh;
+          padding-top: 140px;           /* ← IMPORTANT pour la navbar */
           display: grid;
           place-items: center;
           overflow: hidden;
-          padding-top: 80px;
           padding-bottom: 60px;
           background:
             radial-gradient(ellipse 120% 80% at 50% -10%,  #f5c97a 0%, transparent 60%),
