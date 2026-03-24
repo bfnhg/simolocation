@@ -8,7 +8,7 @@ const cards = [
     title: "Flotte variée",
     short: "Citadines, SUV, premium",
     tags: ["citadines", "SUV", "premium"],
-    // desc: "Que vous soyez en solo, en famille ou en groupe, notre flotte s'adapte à chaque besoin. Citadines économiques, SUV spacieux, berlines de luxe — plus de 30 véhicules disponibles à Marrakech.",
+    desc: "Que vous soyez en solo, en famille ou en groupe, notre flotte s'adapte à chaque besoin. Citadines économiques, SUV spacieux, berlines de luxe — plus de 30 véhicules disponibles à Marrakech.",
     points: ["30+ véhicules disponibles", "Modèles récents (< 2 ans)", "Intérieurs impeccables", "GPS inclus"],
   },
   {
@@ -17,7 +17,7 @@ const cards = [
     icon: "🕐",
     title: "Service 24/7",
     short: "Disponible chaque jour",
-    // desc: "Une urgence à minuit ? Un vol tôt le matin ? Notre équipe est joignable 24h/24 et 7j/7. Réservation, assistance et support en temps réel, sans jamais vous faire attendre.",
+    desc: "Une urgence à minuit ? Un vol tôt le matin ? Notre équipe est joignable 24h/24 et 7j/7. Réservation, assistance et support en temps réel, sans jamais vous faire attendre.",
     points: ["Hotline disponible 24h/24", "Réponse sous 5 minutes", "Assistance sur route incluse", "Aucun jour férié fermé"],
   },
   {
@@ -26,7 +26,7 @@ const cards = [
     icon: "✦",
     title: "Prix transparents",
     short: "Aucun frais caché",
-    // desc: "Chez nous, le prix affiché est le prix payé. Pas de frais cachés, pas de surprises à la restitution. Chaque tarif est détaillé avant la signature et vous recevez un contrat clair et lisible.",
+    desc: "Chez nous, le prix affiché est le prix payé. Pas de frais cachés, pas de surprises à la restitution. Chaque tarif est détaillé avant la signature et vous recevez un contrat clair et lisible.",
     points: ["Devis gratuit en ligne", "Contrat détaillé", "Zéro frais de dossier", "Remboursement si annulation"],
   },
   {
@@ -35,7 +35,7 @@ const cards = [
     icon: "⭐",
     title: "Expérience premium",
     short: "Accueil personnalisé",
-    // desc: "Chaque véhicule est nettoyé, révisé et préparé avant votre arrivée. Nous offrons une expérience digne des meilleures agences internationales, avec le sourire marocain en plus.",
+    desc: "Chaque véhicule est nettoyé, révisé et préparé avant votre arrivée. Nous offrons une expérience digne des meilleures agences internationales, avec le sourire marocain en plus.",
     points: ["Véhicule nettoyé & désinfecté", "Plein d'essence à la remise", "Accueil personnalisé", "Eau minérale offerte"],
   },
   {
@@ -53,7 +53,7 @@ const cards = [
     icon: "🛡️",
     title: "Assurance incluse",
     short: "Couverture complète",
-    // desc: "Tous nos véhicules sont couverts par une assurance tous risques. Vous roulez l'esprit tranquille, sans craindre les imprévus. Une protection complète est incluse dans chaque location.",
+    desc: "Tous nos véhicules sont couverts par une assurance tous risques. Vous roulez l'esprit tranquille, sans craindre les imprévus. Une protection complète est incluse dans chaque location.",
     points: ["Tous risques inclus", "Assistance routière 24h", "Franchise réduite disponible", "Couverture conducteur supplémentaire"],
   },
   {
@@ -62,12 +62,12 @@ const cards = [
     icon: "💬",
     title: "Support français",
     short: "Équipe francophone",
-    // desc: "Notre équipe est entièrement francophone. Pas de barrière de langue, pas de malentendu. Du premier contact jusqu'à la restitution du véhicule, nous communiquons dans votre langue.",
+    desc: "Notre équipe est entièrement francophone. Pas de barrière de langue, pas de malentendu. Du premier contact jusqu'à la restitution du véhicule, nous communiquons dans votre langue.",
     points: ["100% en français", "WhatsApp & appel", "Email sous 1h", "Conseils personnalisés"],
   },
 ];
 
-// Desktop arc parameters (inchangé)
+// Desktop arc parameters
 const DESKTOP_PARAMS = {
   radius: 400,
   cardW: 238,
@@ -141,7 +141,7 @@ export default function WhyChooseUs() {
     }
   };
 
-  // Desktop arc view (exactement comme avant)
+  // Desktop arc view
   const renderDesktopView = () => (
     <div className="fan-wrapper">
       {cards.map((card, i) => {
@@ -247,6 +247,20 @@ export default function WhyChooseUs() {
     </div>
   );
 
+  const handleReserveClick = () => {
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleFleetClick = () => {
+    const carsSection = document.querySelector('#cars');
+    if (carsSection) {
+      carsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -332,7 +346,7 @@ export default function WhyChooseUs() {
           padding: 0 1em;
         }
 
-        /* Desktop Arc Styles (inchangé) */
+        /* Desktop Arc Styles */
         .fan-wrapper {
           position: relative;
           width: ${DESKTOP_PARAMS.wrapperW}px;
@@ -737,7 +751,7 @@ export default function WhyChooseUs() {
 
         .fan-btn-sub { background: var(--dark); color: var(--gold2); }
 
-        /* Modal Styles (inchangé) */
+        /* Modal Styles */
         .fan-overlay {
           position: fixed;
           inset: 0;
@@ -945,7 +959,8 @@ export default function WhyChooseUs() {
         }
       `}</style>
 
-      <section className="fan-section">
+      {/* AJOUT DE L'ID WHYCHOOSEUS ICI */}
+      <section id="whychooseus" className="fan-section">
         <header className="fan-header">
           <p className="fan-eyebrow">Notre engagement</p>
           <h2 className="fan-title">Pourquoi nous choisir</h2>
@@ -961,8 +976,8 @@ export default function WhyChooseUs() {
         </p>
 
         <div className="fan-buttons">
-          <button className="fan-btn fan-btn-main">Réserver maintenant</button>
-          <button className="fan-btn fan-btn-sub">Voir la flotte</button>
+          <button className="fan-btn fan-btn-main" onClick={handleReserveClick}>Réserver maintenant</button>
+          <button className="fan-btn fan-btn-sub" onClick={handleFleetClick}>Voir la flotte</button>
         </div>
       </section>
 
@@ -1001,10 +1016,10 @@ export default function WhyChooseUs() {
               )}
 
               <div className="fan-modal-cta">
-                <button className="fan-btn fan-btn-main" onClick={() => setSelected(null)}>
+                <button className="fan-btn fan-btn-main" onClick={() => { setSelected(null); handleReserveClick(); }}>
                   Réserver maintenant
                 </button>
-                <button className="fan-btn fan-btn-sub" onClick={() => setSelected(null)}>
+                <button className="fan-btn fan-btn-sub" onClick={() => { setSelected(null); handleFleetClick(); }}>
                   Voir la flotte
                 </button>
               </div>
@@ -1015,4 +1030,3 @@ export default function WhyChooseUs() {
     </>
   );
 }
-

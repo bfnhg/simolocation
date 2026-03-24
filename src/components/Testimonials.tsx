@@ -23,6 +23,14 @@ export interface GlobeMarker<T = any> {
   label?: string;
   size?: number;
   data?: T;
+  testimonial?: {
+    name: string;
+    role?: string;
+    text: string;
+    rating?: number;
+    date?: string;
+    vehicle?: string;
+  };
 }
 
 export interface GlobeConfig {
@@ -102,6 +110,234 @@ function useAnimatedTitle(text: string, delay = 0) {
 }
 
 // ============================================================================
+// Premium Testimonial Popup
+// ============================================================================
+
+interface TestimonialPopupProps {
+  marker: GlobeMarker;
+  onClose: () => void;
+  position: { x: number; y: number };
+}
+
+function TestimonialPopup({ marker, onClose, position }: TestimonialPopupProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsVisible(true);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
+  const testimonial = marker.testimonial || {
+    name: marker.label || "Client",
+    role: "Client satisfait",
+    text: "Service exceptionnel, je recommande vivement !",
+    rating: 5,
+    date: new Date().toLocaleDateString(),
+    vehicle: "Véhicule premium"
+  };
+
+  const ratingStars = Array(5).fill(0).map((_, i) => (
+    <svg
+      key={i}
+      style={{ width: '16px', height: '16px', display: 'inline-block' }}
+      fill={i < (testimonial.rating || 5) ? "#fbbf24" : "#4b5563"}
+      viewBox="0 0 20 20"
+    >
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+  ));
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: position.y - 20,
+        left: position.x,
+        transform: `translate(-50%, -100%) scale(${isVisible ? 1 : 0.9})`,
+        opacity: isVisible ? 1 : 0,
+        transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        zIndex: 1000,
+        pointerEvents: 'auto',
+      }}
+    >
+      <div
+        ref={popupRef}
+        style={{
+          width: '320px',
+          background: 'linear-gradient(135deg, rgba(15, 25, 45, 0.98), rgba(8, 15, 28, 0.98))',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '24px',
+          border: '1px solid rgba(77, 166, 255, 0.3)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(77, 166, 255, 0.1)',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            height: '4px',
+            background: 'linear-gradient(90deg, #4da6ff, #a78bfa, #4da6ff)',
+          }}
+        />
+        
+        <div style={{ padding: '20px 20px 12px', position: 'relative' }}>
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '28px',
+              height: '28px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: '2px solid #4da6ff',
+                background: 'linear-gradient(135deg, #1e40af, #7c3aed)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              }}
+            >
+              <img
+                src={marker.src}
+                alt={testimonial.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const parent = e.currentTarget.parentElement;
+                  if (parent) {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:white';
+                    div.textContent = testimonial.name[0];
+                    parent.appendChild(div);
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#fff', margin: 0 }}>
+                {testimonial.name}
+              </h3>
+              {testimonial.role && (
+                <p style={{ fontSize: '12px', color: '#4da6ff', margin: '4px 0 0' }}>
+                  {testimonial.role}
+                </p>
+              )}
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+            {ratingStars}
+          </div>
+        </div>
+        
+        <div style={{ padding: '0 20px 20px' }}>
+          {testimonial.vehicle && (
+            <div
+              style={{
+                display: 'inline-block',
+                background: 'rgba(77, 166, 255, 0.15)',
+                borderRadius: '20px',
+                padding: '4px 12px',
+                fontSize: '11px',
+                color: '#4da6ff',
+                marginBottom: '12px',
+              }}
+            >
+              🚗 {testimonial.vehicle}
+            </div>
+          )}
+          
+          <p
+            style={{
+              fontSize: '14px',
+              lineHeight: 1.6,
+              color: 'rgba(255,255,255,0.85)',
+              margin: '0 0 12px',
+              fontStyle: 'italic',
+            }}
+          >
+            "{testimonial.text}"
+          </p>
+          
+          {testimonial.date && (
+            <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+              {testimonial.date}
+            </p>
+          )}
+        </div>
+        
+        <div
+          style={{
+            padding: '12px 20px',
+            borderTop: '1px solid rgba(77, 166, 255, 0.1)',
+            background: 'rgba(0,0,0,0.2)',
+            fontSize: '11px',
+            color: 'rgba(255,255,255,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span>Lat: {marker.lat.toFixed(2)}° · Lng: {marker.lng.toFixed(2)}°</span>
+        </div>
+      </div>
+      
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-8px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '0',
+          height: '0',
+          borderLeft: '8px solid transparent',
+          borderRight: '8px solid transparent',
+          borderTop: '8px solid rgba(15, 25, 45, 0.98)',
+          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.2))',
+        }}
+      />
+    </div>
+  );
+}
+
+// ============================================================================
 // Marker
 // ============================================================================
 
@@ -109,17 +345,18 @@ interface MarkerProps {
   marker: GlobeMarker;
   radius: number;
   defaultSize: number;
-  onClick?: (marker: GlobeMarker) => void;
+  onClick?: (marker: GlobeMarker, event: React.MouseEvent) => void;
   onHover?: (marker: GlobeMarker | null) => void;
 }
 
 function Marker({ marker, radius, defaultSize, onClick, onHover }: MarkerProps) {
-  const [hovered, setHovered]     = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [imgError, setImgError]   = useState(false);
-  const groupRef      = useRef<THREE.Group>(null);
+  const [imgError, setImgError] = useState(false);
+  const groupRef = useRef<THREE.Group>(null);
   const imageGroupRef = useRef<THREE.Group>(null);
-  const { camera }    = useThree();
+  const { camera } = useThree();
+  const glowRef = useRef<THREE.Mesh>(null);
 
   const surfacePosition = useMemo(
     () => latLngToVector3(marker.lat, marker.lng, radius * 1.001),
@@ -133,16 +370,21 @@ function Marker({ marker, radius, defaultSize, onClick, onHover }: MarkerProps) 
 
   const lineHeight = topPosition.distanceTo(surfacePosition);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!imageGroupRef.current) return;
     const worldPos = new THREE.Vector3();
     imageGroupRef.current.getWorldPosition(worldPos);
     const dot = worldPos.clone().normalize().dot(camera.position.clone().normalize());
     setIsVisible(dot > 0.1);
+    
+    if (glowRef.current && hovered) {
+      const scale = 1 + Math.sin(state.clock.elapsedTime * 8) * 0.05;
+      glowRef.current.scale.set(scale, scale, scale);
+    }
   });
 
   const { lineCenter, lineQuaternion } = useMemo(() => {
-    const center    = surfacePosition.clone().lerp(topPosition, 0.5);
+    const center = surfacePosition.clone().lerp(topPosition, 0.5);
     const direction = topPosition.clone().sub(surfacePosition).normalize();
     const q = new THREE.Quaternion();
     q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
@@ -154,22 +396,48 @@ function Marker({ marker, radius, defaultSize, onClick, onHover }: MarkerProps) 
     return marker.label.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
   }, [marker.label]);
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClick?.(marker, e);
+  };
+
   return (
     <group ref={groupRef} visible={isVisible}>
       {/* Stem */}
       <mesh position={lineCenter} quaternion={lineQuaternion}>
         <cylinderGeometry args={[0.003, 0.003, lineHeight, 8]} />
-        <meshBasicMaterial
-          color={hovered ? "#ffffff" : "#94a3b8"}
+        <meshStandardMaterial
+          color={hovered ? "#ffffff" : "#4da6ff"}
+          emissive={hovered ? "#4da6ff" : "#1e3a8a"}
+          emissiveIntensity={hovered ? 0.5 : 0.2}
           transparent
-          opacity={hovered ? 0.95 : 0.55}
+          opacity={hovered ? 0.95 : 0.65}
+          metalness={0.8}
+          roughness={0.3}
         />
       </mesh>
 
-      {/* Dot at surface */}
+      {/* Base with glow effect */}
       <mesh position={surfacePosition}>
-        <coneGeometry args={[0.015, 0.04, 8]} />
-        <meshBasicMaterial color={hovered ? "#f97316" : "#ef4444"} />
+        <sphereGeometry args={[0.022, 16, 16]} />
+        <meshStandardMaterial
+          color={hovered ? "#f97316" : "#ef4444"}
+          emissive={hovered ? "#f97316" : "#ef4444"}
+          emissiveIntensity={hovered ? 0.4 : 0.1}
+          metalness={0.9}
+          roughness={0.2}
+        />
+      </mesh>
+      
+      {/* Glow ring */}
+      <mesh position={surfacePosition} ref={glowRef}>
+        <ringGeometry args={[0.028, 0.042, 32]} />
+        <meshBasicMaterial
+          color={hovered ? "#f97316" : "#ef4444"}
+          transparent
+          opacity={hovered ? 0.6 : 0.3}
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       {/* Avatar at top */}
@@ -178,53 +446,100 @@ function Marker({ marker, radius, defaultSize, onClick, onHover }: MarkerProps) 
           transform
           center
           sprite
-          distanceFactor={10}
+          distanceFactor={12}
           style={{
             pointerEvents: isVisible ? "auto" : "none",
             opacity: isVisible ? 1 : 0,
-            transition: "opacity 0.15s ease-out",
+            transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
           <div
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              overflow: "hidden",
+              position: 'relative',
               cursor: "pointer",
-              border: hovered ? "2.5px solid #ffffff" : "2px solid rgba(255,255,255,0.55)",
-              boxShadow: hovered
-                ? "0 0 0 3px rgba(249,115,22,0.5), 0 8px 24px rgba(0,0,0,0.5)"
-                : "0 4px 12px rgba(0,0,0,0.45)",
-              transform: hovered ? "scale(1.3)" : "scale(1)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease",
-              background: "linear-gradient(135deg, #1e40af, #7c3aed)",
+              transform: hovered ? "scale(1.15)" : "scale(1)",
+              transition: "all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)",
             }}
-            onMouseEnter={() => { setHovered(true);  onHover?.(marker); }}
-            onMouseLeave={() => { setHovered(false); onHover?.(null);   }}
-            onClick={() => onClick?.(marker)}
+            onMouseEnter={() => { setHovered(true); onHover?.(marker); }}
+            onMouseLeave={() => { setHovered(false); onHover?.(null); }}
+            onClick={handleClick}
           >
-            {!imgError ? (
-              <img
-                src={marker.src}
-                alt={marker.label ?? "marker"}
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                onError={() => setImgError(true)}
-                draggable={false}
-                crossOrigin="anonymous"
-              />
-            ) : (
-              <div
-                style={{
-                  width: "100%", height: "100%",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "13px", fontWeight: 700, color: "#fff",
-                  background: "linear-gradient(135deg, #1e40af, #7c3aed)",
-                }}
-              >
-                {initials}
-              </div>
-            )}
+            {/* Outer ring with gradient */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: '-3px',
+                borderRadius: '50%',
+                background: `conic-gradient(from ${Date.now() % 360}deg, #4da6ff, #a78bfa, #4da6ff)`,
+                opacity: hovered ? 0.8 : 0.4,
+                transition: 'opacity 0.3s ease',
+                animation: hovered ? 'rotateGradient 3s linear infinite' : 'none',
+              }}
+            />
+            
+            {/* Avatar container */}
+            <div
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "50%",
+                overflow: "hidden",
+                position: 'relative',
+                background: "linear-gradient(135deg, #1e293b, #0f172a)",
+                border: hovered ? "2.5px solid rgba(255,255,255,0.9)" : "2px solid rgba(77,166,255,0.6)",
+                boxShadow: hovered
+                  ? "0 0 0 4px rgba(77,166,255,0.3), 0 12px 28px rgba(0,0,0,0.5)"
+                  : "0 6px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(77,166,255,0.2)",
+                transition: "all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1)",
+              }}
+            >
+              {!imgError ? (
+                <img
+                  src={marker.src}
+                  alt={marker.label ?? "marker"}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  onError={() => setImgError(true)}
+                  draggable={false}
+                  crossOrigin="anonymous"
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%", height: "100%",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "20px", fontWeight: 700,
+                    background: "linear-gradient(135deg, #4da6ff, #a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {initials}
+                </div>
+              )}
+            </div>
+            
+            {/* Premium badge for verified */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '-2px',
+                right: '-2px',
+                width: '18px',
+                height: '18px',
+                background: 'linear-gradient(135deg, #4da6ff, #a78bfa)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid #0f172a',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+            </div>
           </div>
         </Html>
       </group>
@@ -244,7 +559,7 @@ function RotatingGlobe({
 }: {
   config: Required<GlobeConfig>;
   markers: GlobeMarker[];
-  onMarkerClick?: (m: GlobeMarker) => void;
+  onMarkerClick?: (m: GlobeMarker, e: React.MouseEvent) => void;
   onMarkerHover?: (m: GlobeMarker | null) => void;
 }) {
   const [earthTexture, bumpTexture] = useTexture([
@@ -257,7 +572,7 @@ function RotatingGlobe({
     if (bumpTexture)  { bumpTexture.anisotropy = 8; }
   }, [earthTexture, bumpTexture]);
 
-  const geometry = useMemo(() => new THREE.SphereGeometry(config.radius, 64, 64), [config.radius]);
+  const geometry = useMemo(() => new THREE.SphereGeometry(config.radius, 128, 128), [config.radius]);
 
   return (
     <group>
@@ -266,8 +581,10 @@ function RotatingGlobe({
           map={earthTexture}
           bumpMap={bumpTexture}
           bumpScale={(config.bumpScale) * 0.05}
-          roughness={0.65}
-          metalness={0.0}
+          roughness={0.55}
+          metalness={0.1}
+          emissive="#112233"
+          emissiveIntensity={0.1}
         />
       </mesh>
 
@@ -331,8 +648,8 @@ function Atmosphere({ radius, color, intensity, blur }: {
   }), [color, intensity, blur]);
 
   return (
-    <mesh scale={[1.13, 1.13, 1.13]}>
-      <sphereGeometry args={[radius, 64, 32]} />
+    <mesh scale={[1.15, 1.15, 1.15]}>
+      <sphereGeometry args={[radius, 96, 48]} />
       <primitive object={mat} attach="material" />
     </mesh>
   );
@@ -345,7 +662,7 @@ function Atmosphere({ radius, color, intensity, blur }: {
 function Scene({ markers, config, onMarkerClick, onMarkerHover }: {
   markers: GlobeMarker[];
   config: Required<GlobeConfig>;
-  onMarkerClick?: (m: GlobeMarker) => void;
+  onMarkerClick?: (m: GlobeMarker, e: React.MouseEvent) => void;
   onMarkerHover?: (m: GlobeMarker | null) => void;
 }) {
   const { camera } = useThree();
@@ -364,9 +681,10 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover }: {
       />
       <directionalLight
         position={[-config.radius * 3, config.radius, -config.radius * 2]}
-        intensity={config.pointLightIntensity * 0.3}
+        intensity={config.pointLightIntensity * 0.4}
         color="#88ccff"
       />
+      <pointLight position={[0, config.radius * 1.5, 0]} intensity={0.5} color="#4da6ff" />
 
       <RotatingGlobe
         config={config}
@@ -390,11 +708,13 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover }: {
         enableZoom={config.enableZoom}
         minDistance={config.minDistance}
         maxDistance={config.maxDistance}
-        rotateSpeed={0.4}
+        rotateSpeed={0.5}
         autoRotate={(config.autoRotateSpeed) > 0}
         autoRotateSpeed={config.autoRotateSpeed}
         enableDamping
-        dampingFactor={0.1}
+        dampingFactor={0.05}
+        zoomSpeed={1.0}
+        target={[0, 0, 0]}
       />
     </>
   );
@@ -407,18 +727,19 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover }: {
 function LoadingFallback() {
   return (
     <Html center>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
         <div
           style={{
-            width: 36, height: 36,
+            width: 48, height: 48,
             borderRadius: "50%",
-            border: "2px solid rgba(77,166,255,0.3)",
-            borderTop: "2px solid #4da6ff",
+            border: "3px solid rgba(77,166,255,0.2)",
+            borderTop: "3px solid #4da6ff",
+            borderRight: "3px solid #a78bfa",
             animation: "spin 0.8s linear infinite",
           }}
         />
-        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", letterSpacing: "0.08em" }}>
-          Loading globe…
+        <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", fontWeight: 500 }}>
+          Chargement de l'expérience...
         </span>
         <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
@@ -436,19 +757,19 @@ const defaultConfig: Required<GlobeConfig> = {
   bumpMapUrl:           DEFAULT_BUMP_TEXTURE,
   showAtmosphere:       true,
   atmosphereColor:      "#4da6ff",
-  atmosphereIntensity:  0.55,
-  atmosphereBlur:       2,
+  atmosphereIntensity:  0.65,
+  atmosphereBlur:       2.5,
   bumpScale:            1,
   autoRotateSpeed:      0.35,
   enableZoom:           true,
-  enablePan:            false,
-  minDistance:          4,
-  maxDistance:          14,
+  enablePan:            true,
+  minDistance:          3,
+  maxDistance:          12,
   markerSize:           0.06,
   showWireframe:        false,
   wireframeColor:       "#4a9eff",
-  ambientIntensity:     0.65,
-  pointLightIntensity:  1.6,
+  ambientIntensity:     0.7,
+  pointLightIntensity:  1.8,
   backgroundColor:      null,
 };
 
@@ -456,12 +777,12 @@ const defaultConfig: Required<GlobeConfig> = {
 // Animated title words
 // ============================================================================
 
-const TITLE_LINE1 = "Ils nous font";
-const TITLE_LINE2 = "confiance";
-const SUBTITLE    = "Des clients du monde entier nous choisissent pour louer leur véhicule à Marrakech.";
+const TITLE_LINE1 = "Expérience";
+const TITLE_LINE2 = "Clients";
+const SUBTITLE    = "Découvrez ce que nos clients du monde entier pensent de leur expérience de location à Marrakech.";
 
 // ============================================================================
-// TestimonialGlobe  ← export nommé principal
+// TestimonialGlobe avec ID testimonials
 // ============================================================================
 
 export function TestimonialGlobe({
@@ -472,6 +793,8 @@ export function TestimonialGlobe({
   onMarkerHover,
 }: Globe3DProps) {
   const mergedConfig = useMemo(() => ({ ...defaultConfig, ...config }), [config]);
+  const [selectedMarker, setSelectedMarker] = useState<GlobeMarker | null>(null);
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
 
   // Letter-reveal animation
   const full1  = TITLE_LINE1;
@@ -493,9 +816,24 @@ export function TestimonialGlobe({
     return () => clearTimeout(t);
   }, []);
 
+  const handleMarkerClick = useCallback((marker: GlobeMarker, event: React.MouseEvent) => {
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    setPopupPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+    });
+    setSelectedMarker(marker);
+    onMarkerClick?.(marker);
+  }, [onMarkerClick]);
+
+  const handleClosePopup = useCallback(() => {
+    setSelectedMarker(null);
+  }, []);
+
   return (
     <section
-      className={cn("relative w-full overflow-hidden", className)}
+      id="testimonials"
+      className={cn("relative w-full overflow-hidden scroll-mt-20", className)}
       style={{
         minHeight: "780px",
         background: "linear-gradient(160deg, #04060f 0%, #080e22 50%, #04060f 100%)",
@@ -552,7 +890,7 @@ export function TestimonialGlobe({
               color: "#4da6ff", fontWeight: 500,
             }}
           >
-            Témoignages clients
+            Expérience Client
           </span>
           <span style={{ width: 28, height: 1, background: "linear-gradient(90deg, #4da6ff, transparent)" }} />
         </div>
@@ -687,7 +1025,7 @@ export function TestimonialGlobe({
             <Scene
               markers={markers}
               config={mergedConfig}
-              onMarkerClick={onMarkerClick}
+              onMarkerClick={handleMarkerClick}
               onMarkerHover={onMarkerHover}
             />
           </Suspense>
@@ -724,6 +1062,15 @@ export function TestimonialGlobe({
         </span>
       </div>
 
+      {/* Testimonial Popup */}
+      {selectedMarker && (
+        <TestimonialPopup
+          marker={selectedMarker}
+          onClose={handleClosePopup}
+          position={popupPosition}
+        />
+      )}
+
       {/* CSS animations */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap');
@@ -731,6 +1078,10 @@ export function TestimonialGlobe({
           0%   { background-position: 0%   50% }
           50%  { background-position: 100% 50% }
           100% { background-position: 0%   50% }
+        }
+        @keyframes rotateGradient {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </section>

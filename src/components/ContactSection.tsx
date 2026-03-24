@@ -569,7 +569,7 @@ const ContactForm = () => {
 };
 
 /* ==============================================
-   COMPOSANT PRINCIPAL
+   COMPOSANT PRINCIPAL AVEC ID
 ============================================== */
 interface ContactCard {
   title: string;
@@ -624,7 +624,8 @@ export default function ContactSection() {
         }
       `}</style>
 
-      <section className="relative min-h-screen py-16 md:py-20 lg:py-24 overflow-hidden">
+      {/* AJOUT DE L'ID CONTACT ICI */}
+      <section id="contact" className="relative min-h-screen py-16 md:py-20 lg:py-24 overflow-hidden">
         {/* Background avec dégradé dynamique */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50" />
         
