@@ -25,7 +25,7 @@ const CarDetailsModal = ({ car, onClose, onReserve }: CarDetailsModalProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
           <div className="absolute bottom-4 left-6">
             <h2 className="font-display text-3xl font-bold text-foreground">{car.name}</h2>
-            <p className="text-primary font-display font-semibold text-lg">{car.price} MAD/jour</p>
+            <p className="text-primary font-display font-semibold text-lg">{car.price} Euros/jour</p>
           </div>
         </div>
 
