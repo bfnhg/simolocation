@@ -142,7 +142,7 @@ const Index = () => {
           <div>
             <h4 className="font-display font-semibold text-foreground mb-3">Contact</h4>
             <div className="space-y-2 text-muted-foreground">
-              <div className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +212 6XX XXX XXX</div>
+              <div className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +212 777 882 400</div>
               <div className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> contact@marrakechauto.ma</div>
               <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Guéliz, Marrakech</div>
             </div>

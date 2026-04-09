@@ -242,7 +242,7 @@ export default function FloatingNavbar() {
               >
                 <Phone className="w-3 h-3 text-[#c05c20]" />
                 <span className="text-[10px] font-medium text-[#7a3010] whitespace-nowrap">
-                  +212 663 234 335
+                    +212 777 882 400
                 </span>
               </motion.div>
             </motion.nav>
@@ -398,7 +398,7 @@ export default function FloatingNavbar() {
                     {/* Téléphone dans le menu mobile */}
                     <div className="flex items-center gap-2 px-5 py-3 mt-1 border-t border-[#e0b070]/20">
                       <Phone className="w-3.5 h-3.5 text-[#c05c20]" />
-                      <span className="text-xs font-medium text-[#7a3010]">+212 6XX XXX XXX</span>
+                      <span className="text-xs font-medium text-[#7a3010]">+212 777 882 400</span>
                     </div>
                   </div>
                 </motion.div>

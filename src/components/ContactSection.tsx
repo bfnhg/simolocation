@@ -21,8 +21,8 @@ const contactCards: ContactCard[] = [
   {
     title: "Téléphone",
     icon: Phone,
-    description: "+212 6XX XXX XXX",
-    href: "tel:+2126XXXXXXX",
+    description: "+212 777 882 400",
+    href: "tel:+212777882400",
     gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
   {

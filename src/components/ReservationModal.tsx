@@ -32,7 +32,7 @@ const ReservationModal = ({ car, onClose }: ReservationModalProps) => {
 *Voiture :* ${car.name}
 *Marque :* ${car.brand}
 *Année :* ${car.year}
-*Prix :* ${car.price} MAD / jour
+*Prix :* ${car.price} Euros / jour
 
 *Client :*
 Nom : ${form.nom} ${form.prenom}
@@ -50,7 +50,7 @@ Merci de confirmer la disponibilité et les détails de la réservation 🙏
     `.trim();
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/212663234335?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/212777882400?text=${encodedMessage}`;
 
     // Ouvrir WhatsApp
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
@@ -125,7 +125,7 @@ Merci de confirmer la disponibilité et les détails de la réservation 🙏
               required 
               value={form.telephone} 
               onChange={handleChange}
-              placeholder="+212 6XX XXX XXX"
+              placeholder="+212 777 882 400"
               className="w-full px-3 py-2.5 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
