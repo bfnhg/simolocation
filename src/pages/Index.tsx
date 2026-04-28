@@ -136,14 +136,15 @@ const Index = () => {
       <footer className="border-t border-border py-12 px-4">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
           <div>
-            <h3 className="font-display text-lg font-bold text-gradient mb-3">Marrakech Auto Location</h3>
+            <h3 className="font-display text-lg font-bold text-gradient mb-3">Premium car marrakech
+</h3>
             <p className="text-muted-foreground">Votre partenaire de confiance pour la location de voitures à Marrakech depuis 2015.</p>
           </div>
           <div>
             <h4 className="font-display font-semibold text-foreground mb-3">Contact</h4>
             <div className="space-y-2 text-muted-foreground">
               <div className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +212 777 882 400</div>
-              <div className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> contact@marrakechauto.ma</div>
+              <div className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> Premiumcar@marrakechauto.ma</div>
               <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Guéliz, Marrakech</div>
             </div>
           </div>
@@ -154,7 +155,7 @@ const Index = () => {
           </div>
         </div>
         <div className="container mx-auto mt-8 pt-6 border-t border-border text-center text-muted-foreground text-xs">
-          © 2026 Marrakech Auto Location. Tous droits réservés.
+          © 2026 Premium car marrakech. Tous droits réservés.
         </div>
       </footer>
 

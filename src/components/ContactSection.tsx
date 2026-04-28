@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 
 /* ==============================================
-   CONFIGURATION & CONSTANTES
+   CONFIGURATION & CONSTANTES (inchangée)
 ============================================== */
 const WORDS = [
   { text: "Besoin", gradient: false },
@@ -28,8 +28,8 @@ const contactCards: ContactCard[] = [
   {
     title: "Email",
     icon: Mail,
-    description: "contact@marrakechauto.ma",
-    href: "mailto:contact@marrakechauto.ma",
+    description: "Premiumcar@marrakech.ma",
+    href: "mailto:Premiumcar@marrakech.ma",
     gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
   },
   {
@@ -43,10 +43,8 @@ const contactCards: ContactCard[] = [
 ];
 
 /* ==============================================
-   COMPOSANTS D'ANIMATION
+   COMPOSANTS D'ANIMATION (inchangés)
 ============================================== */
-
-// Text Generate Effect avec staggered animation
 const TextGenerateEffect = () => {
   const [active, setActive] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -99,7 +97,6 @@ const TextGenerateEffect = () => {
   );
 };
 
-// Typewriter avec effet de glow
 const TypewriterSubtitle = () => {
   const [visible, setVisible] = useState(0);
   const [isInView, setIsInView] = useState(false);
@@ -141,7 +138,6 @@ const TypewriterSubtitle = () => {
   );
 };
 
-// Floating Particles Background
 const ParticlesBackground = () => {
   const particles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
@@ -175,10 +171,8 @@ const ParticlesBackground = () => {
 };
 
 /* ==============================================
-   COMPOSANTS PRINCIPAUX
+   CONTACT CARD 3D AMÉLIORÉE (RESPONSIVE)
 ============================================== */
-
-// Contact Card 3D Ultra Premium
 const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
@@ -203,7 +197,7 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
       ref={cardRef}
       href={card.href}
       target={card.target || "_self"}
-      className="group block"
+      className="group block w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -212,7 +206,7 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
       onMouseMove={handleMouseMove}
     >
       <div
-        className="relative p-6 md:p-8 rounded-3xl transition-all duration-300"
+        className="relative p-5 md:p-6 lg:p-8 rounded-3xl transition-all duration-300 w-full"
         style={{
           background: 'rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(12px)',
@@ -226,7 +220,7 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
       >
         {/* Dynamic glow */}
         <div
-          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
           style={{
             background: `radial-gradient(circle at ${glowPosition}, rgba(255,215,0,0.3) 0%, transparent 70%)`,
           }}
@@ -234,7 +228,7 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
 
         {/* Animated border */}
         <div
-          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 pointer-events-none"
           style={{
             background: 'linear-gradient(90deg, #ffd700, #ff8c42, #ffd700)',
             padding: '2px',
@@ -246,39 +240,43 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
           }}
         />
 
-        {/* Content */}
-        <div className="relative z-10 flex items-start gap-4 md:gap-6">
-          {/* Icon with gradient */}
+        {/* Content - modifié pour être responsive et casser les longs mots */}
+        <div className="relative z-10 flex items-start gap-3 md:gap-4 lg:gap-6">
+          {/* Icon */}
           <div
-            className="relative w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            className="relative w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 flex-shrink-0"
             style={{
               background: card.gradient,
               boxShadow: isHovered ? '0 10px 30px rgba(0,0,0,0.3)' : '0 5px 15px rgba(0,0,0,0.2)',
             }}
           >
-            <card.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            
-            {/* Sparkle effect */}
+            <card.icon className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" />
             <Sparkles 
-              className="absolute -top-2 -right-2 w-4 h-4 text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute -top-2 -right-2 w-3 h-3 md:w-4 md:h-4 text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{ animation: 'spin 4s linear infinite' }}
             />
           </div>
 
-          {/* Text content */}
-          <div className="flex-1">
-            <p className="text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-1">
+          {/* Text content avec min-w-0 pour permettre le wrapping */}
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] md:text-xs lg:text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-1">
               {card.title}
             </p>
-            <p className="text-lg md:text-xl font-bold text-gray-900 break-words" 
-               style={{ fontFamily: "'Playfair Display', serif" }}>
+            <p 
+              className="text-base md:text-lg lg:text-xl font-bold text-gray-900 break-words"
+              style={{ 
+                fontFamily: "'Playfair Display', serif",
+                wordBreak: 'break-word',
+                overflowWrap: 'anywhere'
+              }}
+            >
               {card.description}
             </p>
           </div>
 
           {/* Arrow indicator */}
           <ChevronRight 
-            className={`w-5 h-5 text-gray-400 transition-all duration-300 ${
+            className={`w-4 h-4 md:w-5 md:h-5 text-gray-400 transition-all duration-300 flex-shrink-0 ${
               isHovered ? 'translate-x-2 text-amber-600' : ''
             }`}
           />
@@ -286,7 +284,7 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
 
         {/* Reflection effect */}
         <div
-          className="absolute top-0 left-0 right-0 h-1/3 rounded-t-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-300"
+          className="absolute top-0 left-0 right-0 h-1/3 rounded-t-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none"
           style={{
             background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%)',
           }}
@@ -296,7 +294,9 @@ const ContactCard3D = ({ card, index }: { card: ContactCard; index: number }) =>
   );
 };
 
-// Hours Card with 3D effect
+/* ==============================================
+   HOURS CARD (inchangé mais responsive)
+============================================== */
 const HoursCard3D = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
@@ -317,7 +317,7 @@ const HoursCard3D = () => {
   return (
     <div
       ref={cardRef}
-      className="group"
+      className="group w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -326,7 +326,7 @@ const HoursCard3D = () => {
       onMouseMove={handleMouseMove}
     >
       <div
-        className="relative p-6 md:p-8 rounded-3xl"
+        className="relative p-5 md:p-6 lg:p-8 rounded-3xl w-full"
         style={{
           background: 'rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(12px)',
@@ -336,18 +336,16 @@ const HoursCard3D = () => {
           transition: 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease',
         }}
       >
-        {/* Header */}
         <div className="relative z-10 flex items-center gap-3 mb-6">
           <div className="relative">
-            <Clock className="w-6 h-6 text-amber-600" />
+            <Clock className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
             <div className="absolute inset-0 bg-amber-400 blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
           </div>
-          <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-700">
+          <h3 className="text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-gray-700">
             Horaires d'ouverture
           </h3>
         </div>
 
-        {/* Hours grid */}
         <div className="relative z-10 space-y-4">
           {[
             { day: "Lundi – Samedi", hours: "08h00 – 20h00" },
@@ -358,7 +356,7 @@ const HoursCard3D = () => {
               key={i}
               className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-gray-200 last:border-0 last:pb-0"
             >
-              <span className="text-sm text-gray-600 flex items-center gap-2">
+              <span className="text-xs md:text-sm text-gray-600 flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full bg-amber-500" />
                 {item.day}
               </span>
@@ -370,15 +368,13 @@ const HoursCard3D = () => {
           ))}
         </div>
 
-        {/* Badge */}
         <div className="relative z-10 mt-6 flex items-center gap-2">
           <Award className="w-4 h-4 text-amber-600" />
           <span className="text-xs text-gray-500">Service disponible 7j/7</span>
         </div>
 
-        {/* Decorative gradient */}
         <div
-          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
           style={{
             background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgba(251, 191, 36, 0.15) 0%, transparent 70%)`,
           }}
@@ -388,7 +384,9 @@ const HoursCard3D = () => {
   );
 };
 
-// Contact Form Ultra Premium
+/* ==============================================
+   CONTACT FORM (inchangé)
+============================================== */
 const ContactForm = () => {
   const [focused, setFocused] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -428,17 +426,15 @@ const ContactForm = () => {
     <div
       ref={formRef}
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden rounded-3xl md:rounded-4xl"
+      className="relative overflow-hidden rounded-3xl md:rounded-4xl w-full"
     >
-      {/* Background with dynamic glow */}
       <div
-        className="absolute inset-0 transition-opacity duration-300"
+        className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
         style={{
           background: `radial-gradient(circle at ${glowPosition}, rgba(251, 191, 36, 0.2) 0%, transparent 70%)`,
         }}
       />
 
-      {/* Form container */}
       <div
         className="relative p-6 md:p-8 lg:p-10"
         style={{
@@ -447,9 +443,8 @@ const ContactForm = () => {
           border: '1px solid rgba(255,255,255,0.2)',
         }}
       >
-        {/* Animated border */}
         <div
-          className="absolute inset-0 opacity-50"
+          className="absolute inset-0 opacity-50 pointer-events-none"
           style={{
             background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent)',
             animation: 'slide 3s linear infinite',
@@ -552,7 +547,7 @@ const ContactForm = () => {
                   </span>
                   
                   <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{
                       background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
                       animation: 'slide 2s linear infinite',
@@ -569,7 +564,7 @@ const ContactForm = () => {
 };
 
 /* ==============================================
-   COMPOSANT PRINCIPAL AVEC ID
+   COMPOSANT PRINCIPAL AVEC ID - VERSION RESPONSIVE
 ============================================== */
 interface ContactCard {
   title: string;
@@ -609,60 +604,48 @@ export default function ContactSection() {
           to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 640px) {
-          .text-7xl { font-size: 3rem; }
-          .text-6xl { font-size: 2.5rem; }
-          .text-5xl { font-size: 2rem; }
-        }
-
-        @media (min-width: 641px) and (max-width: 768px) {
-          .text-7xl { font-size: 4rem; }
-        }
-
-        @media (min-width: 1024px) {
-          .grid-cols-auto { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        /* Ajustements ultra petits écrans */
+        @media (max-width: 480px) {
+          .contact-card-inner {
+            padding: 1rem !important;
+          }
+          .contact-card-flex {
+            gap: 0.75rem !important;
+          }
         }
       `}</style>
 
-      {/* AJOUT DE L'ID CONTACT ICI */}
       <section id="contact" className="relative min-h-screen py-16 md:py-20 lg:py-24 overflow-hidden">
-        {/* Background avec dégradé dynamique */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50" />
-        
-        {/* Particles effect */}
         <ParticlesBackground />
 
-        {/* Main container */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Header section */}
           <div className="text-center mb-12 md:mb-16 lg:mb-20">
             <TextGenerateEffect />
             <TypewriterSubtitle />
           </div>
 
-          {/* Grid layout responsive */}
+          {/* Grille principale : formulaire à gauche / infos à droite */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
             
-            {/* Left column - Form */}
+            {/* Colonne gauche - Formulaire */}
             <div className="w-full order-2 lg:order-1">
               <ContactForm />
             </div>
 
-            {/* Right column - Cards */}
+            {/* Colonne droite - Cartes de contact */}
             <div className="w-full order-1 lg:order-2 space-y-6 md:space-y-8">
               
-              {/* Contact cards grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6">
+              {/* ✨ GRILLE RESPONSIVE CORRIGÉE : 2 colonnes sur tablette et desktop, 1 colonne sur mobile */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {contactCards.map((card, i) => (
                   <ContactCard3D key={i} card={card} index={i} />
                 ))}
               </div>
 
-              {/* Hours card */}
               <HoursCard3D />
 
-              {/* Trust badges */}
               <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 pt-4">
                 {[
                   { icon: Star, text: "4.9/5 - 500+ avis" },
