@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // ─── Import statique des images depuis public/images ──────────────────────
 // Next.js / Vite / CRA : les fichiers dans /public sont servis à la racine
@@ -6,17 +6,52 @@ import React from 'react';
 // car les fichiers sont dans /public (pas dans /src)
 // ─────────────────────────────────────────────────────────────────────────
 
-const BASE = '/images'; // ← chemin racine public
+const BASE = "/images"; // ← chemin racine public
 
 const DATA = [
-  { src: `${BASE}/pic.webp`, label: 'Kia Picanto',       price: '25€/j', cat: 'Éco'     },
-  { src: `${BASE}/pic1.webp`, label: 'Kia Picanto',       price: '25€/j', cat: 'Éco'     },
-  { src: `${BASE}/pic2.webp`, label: 'Hyundai Grand i10', price: '30€/j', cat: 'Éco'     },
-  { src: `${BASE}/pic3.webp`, label: 'Renault Clio 5',    price: '35€/j', cat: 'Éco'     },
-  { src: `${BASE}/pic4.webp`, label: 'Peugeot 208',       price: '35€/j', cat: 'Éco'     },
-  { src: `${BASE}/pic6.webp`, label: 'Dacia Duster',      price: '45€/j', cat: 'Pick-up' },
-  { src: `${BASE}/pic5.webp`, label: 'Renault Kardian',   price: '40€/j', cat: 'Sport'   },
-  { src: `${BASE}/pic6.webp`, label: 'Dacia Duster',      price: '45€/j', cat: 'Pick-up' },
+  { src: `${BASE}/pic.webp`, label: "Kia Picanto", price: "35€/j", cat: "Éco" },
+  {
+    src: `${BASE}/pic1.webp`,
+    label: "Kia Picanto",
+    price: "35€/j",
+    cat: "Éco",
+  },
+  {
+    src: `${BASE}/pic2.webp`,
+    label: "Hyundai Grand i10",
+    price: "40€/j",
+    cat: "Éco",
+  },
+  {
+    src: `${BASE}/pic3.webp`,
+    label: "Renault Clio 5",
+    price: "45€/j",
+    cat: "Éco",
+  },
+  {
+    src: `${BASE}/pic4.webp`,
+    label: "Peugeot 208",
+    price: "45€/j",
+    cat: "Éco",
+  },
+  {
+    src: `${BASE}/pic6.webp`,
+    label: "Dacia Duster",
+    price: "55€/j",
+    cat: "Pick-up",
+  },
+  {
+    src: `${BASE}/pic5.webp`,
+    label: "Renault Kardian",
+    price: "40€/j",
+    cat: "Sport",
+  },
+  {
+    src: `${BASE}/pic6.webp`,
+    label: "Dacia Duster",
+    price: "55€/j",
+    cat: "Pick-up",
+  },
   // { src: `${BASE}/pic7.webp`, label: 'Dacia Duster Auto', price: '45€/j', cat: 'Pick-up' },
   // 📸 Quand vous aurez pic8 & pic9, remplacez les lignes ci-dessous :
 ];
@@ -316,7 +351,6 @@ const HeroCarousel: React.FC = () => {
         <div className="hero-vignette" />
 
         <div className="hero-inner">
-
           <div className="hero-text">
             <div className="badge">
               <span className="badge-line" />
@@ -327,7 +361,6 @@ const HeroCarousel: React.FC = () => {
               Premium car marrakech
               {/* <span className="line2">Livraison à l'aéroport Kilométrage illimité</span> */}
             </h1>
-           
           </div>
 
           <div className="stats">
@@ -357,9 +390,11 @@ const HeroCarousel: React.FC = () => {
                     key={i}
                     className="card3d"
                     src={car.src}
-                    style={{ 
-                      transform: `rotateY(${angle}deg) translateZ(320px)` 
-                    } as React.CSSProperties}
+                    style={
+                      {
+                        transform: `rotateY(${angle}deg) translateZ(320px)`,
+                      } as React.CSSProperties
+                    }
                     alt={car.label}
                     title={`${car.label} — ${car.price}`}
                     onError={(e) => {
@@ -376,18 +411,35 @@ const HeroCarousel: React.FC = () => {
           <div className="hero-cta">
             <a href="#cars" className="btn-primary">
               Voir notre flotte
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </a>
             <a href="#contact" className="btn-secondary">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
               Nous appeler
             </a>
           </div>
-
         </div>
 
         <div className="scroll-hint">
